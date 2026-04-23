@@ -27,7 +27,110 @@ public class InvoiceController {
     private InvoiceService invoiceService;
 
     /**
-     * 生成发票
+     * 生成并直接下载 PDF 发票
+     * 
+     * POST /api/invoices/generate/pdf
+     * Content-Type: application/json
+     * 
+     * 直接返回 PDF 文件流，浏览器会自动下载
+     */
+    @PostMapping("/generate/pdf")
+    public ResponseEntity<byte[]> generateAndDownloadPdf(
+            @Validated @RequestBody InvoiceData invoiceData) {
+        
+        try {
+            byte[] pdfContent = invoiceService.generatePdfContent(invoiceData);
+            
+            String fileName = "Invoice_" + invoiceData.getInvoiceNo() + ".pdf";
+            
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", fileName);
+            headers.setCacheControl("no-cache, no-store, must-revalidate");
+            headers.setPragma("no-cache");
+            headers.setExpires(0);
+    
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(pdfContent.length)
+                    .body(pdfContent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * 生成并直接下载 XML 发票
+     * 
+     * POST /api/invoices/generate/xml
+     * Content-Type: application/json
+     * 
+     * 直接返回 XML 文件流，浏览器会自动下载
+     */
+    @PostMapping("/generate/xml")
+    public ResponseEntity<byte[]> generateAndDownloadXml(
+            @Validated @RequestBody InvoiceData invoiceData) {
+        
+        try {
+            byte[] xmlContent = invoiceService.generateXmlContent(invoiceData);
+            
+            String fileName = "Invoice_" + invoiceData.getInvoiceNo() + ".xml";
+            
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_XML);
+            headers.setContentDispositionFormData("attachment", fileName);
+            headers.setCacheControl("no-cache, no-store, must-revalidate");
+            headers.setPragma("no-cache");
+            headers.setExpires(0);
+    
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(xmlContent.length)
+                    .body(xmlContent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * 生成并直接下载 OFD 发票
+     * 
+     * POST /api/invoices/generate/ofd
+     * Content-Type: application/json
+     * 
+     * 直接返回 OFD 文件流，浏览器会自动下载
+     */
+    @PostMapping("/generate/ofd")
+    public ResponseEntity<byte[]> generateAndDownloadOfd(
+            @Validated @RequestBody InvoiceData invoiceData) {
+        
+        try {
+            byte[] ofdContent = invoiceService.generateOfdContent(invoiceData);
+            
+            String fileName = "Invoice_" + invoiceData.getInvoiceNo() + ".ofd";
+            
+            MediaType ofdMediaType = MediaType.parseMediaType("application/ofd");
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(ofdMediaType);
+            headers.setContentDispositionFormData("attachment", fileName);
+            headers.setCacheControl("no-cache, no-store, must-revalidate");
+            headers.setPragma("no-cache");
+            headers.setExpires(0);
+    
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(ofdContent.length)
+                    .body(ofdContent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * 生成发票（返回文件路径）
      * 
      * POST /api/invoices/generate
      * Content-Type: application/json

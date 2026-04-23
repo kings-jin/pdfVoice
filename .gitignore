@@ -1,77 +1,21 @@
 ```
 # Compiled and build artifacts
 *.class
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.tar
-*.gz
-
-# Maven
 target/
-**/target/
-
-# Gradle
-.gradle/
-**/.gradle/
-
-# Dependencies
-node_modules/
-**/node_modules/
-**/lib/
-**/libs/
 
 # Logs and temp files
 *.log
-*.tmp
-*.temp
-*.bak
-*.backup
 
 # Environment
 .env
 .env.local
 .env.*
-**/.env
-**/.env.local
-**/.env.*
 
 # Editors
 .vscode/
-**/.vscode/
 .idea/
-**/.idea/
-*.swp
-*.swo
 
-# OS
+# OS generated files
 .DS_Store
 Thumbs.db
-**/.DS_Store
-**/Thumbs.db
-
-# Python
-__pycache__/
-**/__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.so
-*.egg-info/
-**/*.egg-info/
-
-# Coverage
-coverage/
-**/coverage/
-htmlcov/
-**/htmlcov/
-.coverage
-**/.coverage
-
-# Test
-**/.pytest_cache/
-**/test-results/
-**/junit/
 ```

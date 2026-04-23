@@ -32,6 +32,28 @@ public class InvoiceService {
     private final Map<String, byte[]> fileStorage = new HashMap<>();
 
     /**
+     * 生成 PDF 文件内容（直接返回字节数组，用于直接下载）
+     */
+    public byte[] generatePdfContent(InvoiceData invoiceData) throws Exception {
+        return pdfGenerator.generate(invoiceData);
+    }
+
+    /**
+     * 生成 XML 文件内容（直接返回字节数组，用于直接下载）
+     */
+    public byte[] generateXmlContent(InvoiceData invoiceData) throws Exception {
+        String xmlContent = xmlGenerator.generate(invoiceData);
+        return xmlContent.getBytes("UTF-8");
+    }
+
+    /**
+     * 生成 OFD 文件内容（直接返回字节数组，用于直接下载）
+     */
+    public byte[] generateOfdContent(InvoiceData invoiceData) throws Exception {
+        return ofdGenerator.generate(invoiceData);
+    }
+
+    /**
      * 生成发票文件
      *
      * @param invoiceData 发票数据

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="http://www.chinatax.gov.cn/2019/InvoiceML">
+  <Header>
+    <InvoiceCode></InvoiceCode>
+    <InvoiceNo>26532000000566953411</InvoiceNo>
+    <IssueDate>2024 年 04 月 23 日</IssueDate>
+    <CheckCode></CheckCode>
+    <MachineNo></MachineNo>
+  </Header>
+  <SellerInfo>
+    <SellerName>上海科技有限公司</SellerName>
+    <SellerTaxID>91310000MA1K3YJX5C</SellerTaxID>
+    <SellerAddress></SellerAddress>
+    <SellerPhone></SellerPhone>
+    <SellerBankName></SellerBankName>
+    <SellerBankAccount></SellerBankAccount>
+  </SellerInfo>
+  <BuyerInfo>
+    <BuyerName>北京贸易有限公司</BuyerName>
+    <BuyerTaxID>91110000MA00A1X2Y3</BuyerTaxID>
+    <BuyerAddress></BuyerAddress>
+    <BuyerPhone></BuyerPhone>
+    <BuyerBankName></BuyerBankName>
+    <BuyerBankAccount></BuyerBankAccount>
+  </BuyerInfo>
+  <Items>
+    <Item>
+      <ItemIndex>1</ItemIndex>
+      <ItemName>技术服务费</ItemName>
+      <Specification></Specification>
+      <Unit></Unit>
+      <Quantity>1</Quantity>
+      <UnitPrice>10000.00</UnitPrice>
+      <Amount>10000.00</Amount>
+      <TaxRate>6</TaxRate>
+      <TaxAmount>600.00</TaxAmount>
+    </Item>
+  </Items>
+  <Totals>
+    <TotalAmount>10000.00</TotalAmount>
+    <TotalTax>600.00</TotalTax>
+    <TotalAmountWithTax>10600.00</TotalAmountWithTax>
+    <AmountInWords>壹万零陆佰元整</AmountInWords>
+  </Totals>
+  <OtherInfo>
+    <Remarks></Remarks>
+    <Drawer>张三</Drawer>
+    <Payee></Payee>
+    <Reviewer></Reviewer>
+    <IssueTime>2026-04-23 17:19:07</IssueTime>
+  </OtherInfo>
+</Invoice>
