@@ -90,6 +90,10 @@ public class InvoicePDFGenerator {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         PdfWriter writer = new PdfWriter(baos);
         PdfDocument pdf = new PdfDocument(writer);
+        
+        // 【关键修复】先添加一个空白页面，否则 getFirstPage() 会报错
+        pdf.addNewPage(pageSize);
+        
         Document document = new Document(pdf, pageSize);
         document.setMargins(0, 0, 0, 0);  // 无边距
         
