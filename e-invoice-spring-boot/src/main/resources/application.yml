@@ -1,0 +1,28 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: e-invoice
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.example.einvoice: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# 文件上传配置
+spring.servlet.multipart:
+  max-file-size: 10MB
+  max-request-size: 10MB
+
+# Jackson 配置
+spring.jackson:
+  date-format: yyyy-MM-dd HH:mm:ss
+  time-zone: Asia/Shanghai
+  serialization:
+    write-dates-as-timestamps: false

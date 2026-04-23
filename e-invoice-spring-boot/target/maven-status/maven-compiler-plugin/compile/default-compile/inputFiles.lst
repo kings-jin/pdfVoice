@@ -1,0 +1,11 @@
+/workspace/e-invoice-spring-boot/src/main/java/com/example/einvoice/generator/InvoiceOFDGenerator.java
+/workspace/e-invoice-spring-boot/src/main/java/com/example/einvoice/model/InvoiceData.java
+/workspace/e-invoice-spring-boot/src/main/java/com/example/einvoice/EInvoiceApplication.java
+/workspace/e-invoice-spring-boot/src/main/java/com/example/einvoice/model/InvoiceItem.java
+/workspace/e-invoice-spring-boot/src/main/java/com/example/einvoice/model/PartyInfo.java
+/workspace/e-invoice-spring-boot/src/main/java/com/example/einvoice/generator/InvoicePDFGenerator.java
+/workspace/e-invoice-spring-boot/src/main/java/com/example/einvoice/generator/InvoiceXMLGenerator.java
+/workspace/e-invoice-spring-boot/src/main/java/com/example/einvoice/service/InvoiceService.java
+/workspace/e-invoice-spring-boot/src/main/java/com/example/einvoice/model/InvoiceGenerationResult.java
+/workspace/e-invoice-spring-boot/src/main/java/com/example/einvoice/config/WebConfig.java
+/workspace/e-invoice-spring-boot/src/main/java/com/example/einvoice/controller/InvoiceController.java

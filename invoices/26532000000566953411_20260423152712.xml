@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Invoice xmlns="http://www.chinatax.gov.cn/2019/InvoiceML">
+  <Header>
+    <InvoiceCode>053002300111</InvoiceCode>
+    <InvoiceNo>26532000000566953411</InvoiceNo>
+    <IssueDate>2024 年 04 月 23 日</IssueDate>
+    <CheckCode>12345678901234567890</CheckCode>
+    <MachineNo>123456789012</MachineNo>
+  </Header>
+  <SellerInfo>
+    <SellerName>云南百望云数字科技有限公司</SellerName>
+    <SellerTaxID>91530102MABX07CH11</SellerTaxID>
+    <SellerAddress>云南省昆明市五华区东风西路 156 号环球金融写字楼五楼</SellerAddress>
+    <SellerPhone>0871-63636403</SellerPhone>
+    <SellerBankName>招商银行股份有限公司昆明联盟路支行</SellerBankName>
+    <SellerBankAccount>871912253410805</SellerBankAccount>
+  </SellerInfo>
+  <BuyerInfo>
+    <BuyerName>大理弘仁堂药业有限责任公司</BuyerName>
+    <BuyerTaxID>91532901673642569P</BuyerTaxID>
+    <BuyerAddress>云南省大理白族自治州大理市太和街道嘉士伯大道龙泉 B 组团金都富丽小区西侧</BuyerAddress>
+    <BuyerPhone>13320558156</BuyerPhone>
+    <BuyerBankName>中国建设银行股份有限公司大理南诏支行</BuyerBankName>
+    <BuyerBankAccount>53001716038051005334</BuyerBankAccount>
+  </BuyerInfo>
+  <Items>
+    <Item>
+      <ItemName>*软件维护服务*技术服务费</ItemName>
+      <Specification/>
+      <Unit>次</Unit>
+      <Quantity>1</Quantity>
+      <UnitPrice>14150.94</UnitPrice>
+      <Amount>14150.94</Amount>
+      <TaxRate>6</TaxRate>
+      <TaxAmount>849.06</TaxAmount>
+    </Item>
+  </Items>
+  <TotalInfo>
+    <TotalAmount>14150.94</TotalAmount>
+    <TotalTaxAmount>849.06</TotalTaxAmount>
+    <TotalAmountWithTax>15000.0</TotalAmountWithTax>
+    <TotalAmountWithTaxCN>壹元伍拾零佰零仟零整</TotalAmountWithTaxCN>
+  </TotalInfo>
+  <Remarks>销方开户银行：招商银行股份有限公司昆明联盟路支行; 银行账号:871912253410805</Remarks>
+  <Drawer>汤琼</Drawer>
+</Invoice>
