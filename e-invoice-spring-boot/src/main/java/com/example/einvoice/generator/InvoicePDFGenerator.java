@@ -2,11 +2,18 @@ package com.example.einvoice.generator;
 
 import com.example.einvoice.model.InvoiceData;
 import com.example.einvoice.model.InvoiceItem;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
+import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.*;
@@ -15,8 +22,12 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import org.springframework.stereotype.Component;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.zip.CRC32;
 
 /**
  * 发票 PDF 生成器 - 严格遵循《数字化电子发票版式及 XML 规范 V6.001》
@@ -86,7 +97,7 @@ public class InvoicePDFGenerator {
         drawOuterBorder(pdf, PAGE_WIDTH, pageHeight);
         
         // 绘制票头区域 (顶部 30mm)
-        drawHeader(document, invoiceData, pdf, pageWidth, pageHeight);
+        drawHeader(document, invoiceData, pdf, PAGE_WIDTH, pageHeight);
         
         // 绘制购买方和销售方信息区域 (30mm-52mm)
         drawPartiesInfo(document, invoiceData, pdf);
@@ -104,7 +115,7 @@ public class InvoicePDFGenerator {
         drawOfficialSeal(pdf, invoiceData);
         
         // 生成并绘制二维码
-        drawQRCode(pdf, invoiceData);
+        drawQRCode(pdf, invoiceData, pageHeight);
         
         document.close();
         return baos.toByteArray();
@@ -115,7 +126,7 @@ public class InvoicePDFGenerator {
      */
     private void drawOuterBorder(PdfDocument pdf, float width, float height) throws Exception {
         PdfCanvas canvas = new PdfCanvas(pdf.getFirstPage());
-        Canvas c = new Canvas(canvas, pdf, new PageSize(width, height));
+        Canvas c = new Canvas(canvas, new PageSize(width, height));
         
         // 外边框线 - 红褐色 0.25mm
         com.itextpdf.kernel.colors.Color borderColor = RED_BROWN;
@@ -217,7 +228,7 @@ public class InvoicePDFGenerator {
             itemsTable.addCell(createFillCell(item.getName()));
             itemsTable.addCell(createFillCell(item.getSpecification() != null ? item.getSpecification() : ""));
             itemsTable.addCell(createFillCell(item.getUnit() != null ? item.getUnit() : ""));
-            itemsTable.addCell(createFillCell(formatDecimal(item.getQuantity())));
+            itemsTable.addCell(createFillCell(item.getQuantity().toString()));
             itemsTable.addCell(createFillCell(formatDecimal(item.getUnitPrice())));
             itemsTable.addCell(createFillCell(formatDecimal(item.getAmount())));
             itemsTable.addCell(createFillCell(item.getTaxRate() + "%"));
@@ -277,7 +288,7 @@ public class InvoicePDFGenerator {
         
         footerTable.addCell(createFillCell(invoiceData.getDrawer() != null ? invoiceData.getDrawer() : ""));
         footerTable.addCell(createFillCell(invoiceData.getPayee() != null ? invoiceData.getPayee() : ""));
-        footerTable.addCell(createFillCell(invoiceData.getChecker() != null ? invoiceData.getChecker() : ""));
+        footerTable.addCell(createFillCell(invoiceData.getReviewer() != null ? invoiceData.getReviewer() : ""));
         
         document.add(footerTable);
     }
@@ -316,7 +327,6 @@ public class InvoicePDFGenerator {
         
         // 恢复状态
         canvas.restoreState();
-        canvas.close();
     }
     
     /**
@@ -325,29 +335,46 @@ public class InvoicePDFGenerator {
      * 位置：左上角 (7mm, 6mm)
      * 包含 CRC 校验码
      */
-    private void drawQRCode(PdfDocument pdf, InvoiceData invoiceData) throws Exception {
+    private void drawQRCode(PdfDocument pdf, InvoiceData invoiceData, float pageHeight) throws Exception {
         // 生成二维码数据 (根据规范第六章)
         String qrData = generateQRData(invoiceData);
         
         // 使用 ZXing 生成二维码图像
-        // 注意：需要在 pom.xml 中添加 ZXing 依赖
-        /*
-        BitMatrix matrix = new MultiFormatWriter().encode(
-            qrData, 
-            BarcodeFormat.QR_CODE, 
-            (int)(QR_CODE_SIZE * 3.78),  // mm 转像素
-            (int)(QR_CODE_SIZE * 3.78)
-        );
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        int qrSizePx = (int)(QR_CODE_SIZE * 3.78);  // mm 转像素 (约 75px)
         
+        Map<EncodeHintType, Object> hints = new HashMap<>();
+        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+        hints.put(EncodeHintType.ERROR_CORRECTION, 
+            com.google.zxing.qrcode.decoder.ErrorCorrectionLevel.M);
+        
+        BitMatrix matrix = qrCodeWriter.encode(qrData, BarcodeFormat.QR_CODE, qrSizePx, qrSizePx, hints);
         BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(matrix);
         
-        // 将图像添加到 PDF
-        ImageData imgData = ImageDataFactory.create(BufferedImageUtil.convertToBytes(qrImage));
-        Image qrImg = new Image(imgData);
-        qrImg.setFixedPosition(7f, PAGE_WIDTH - 26f, QR_CODE_SIZE);
-        */
+        // 将 BufferedImage 转换为 iText Image
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        javax.imageio.ImageIO.write(qrImage, "PNG", baos);
+        byte[] qrImageBytes = baos.toByteArray();
         
-        // TODO: 实现完整的二维码生成逻辑
+        // 设置位置：左上角 (7mm, 6mm)，Y 坐标从底部开始计算
+        float qrX = 7f;
+        float qrY = pageHeight - 6f - QR_CODE_SIZE;  // 距离顶部 6mm
+        
+        // 添加到文档 - 通过 Canvas 方式添加，先缩放图像
+        PdfCanvas canvas = new PdfCanvas(pdf.getFirstPage());
+        com.itextpdf.io.image.ImageData imageData = com.itextpdf.io.image.ImageDataFactory.create(qrImageBytes);
+        
+        // 保存状态，应用变换矩阵来缩放和定位
+        canvas.saveState();
+        // 创建仿射变换矩阵：平移 + 缩放
+        canvas.concatMatrix(
+            QR_CODE_SIZE / imageData.getWidth(), 0,
+            0, QR_CODE_SIZE / imageData.getHeight(),
+            qrX, qrY
+        );
+        canvas.addImageAt(imageData, 0, 0, false);
+        canvas.restoreState();
+        canvas.release();
     }
     
     /**
@@ -375,8 +402,16 @@ public class InvoicePDFGenerator {
      * 根据规范第六章 CRC 算法说明
      */
     private String calculateCRC(InvoiceData invoiceData) {
-        // TODO: 实现规范的 CRC 算法
-        return "CRC_PLACEHOLDER";
+        // 使用 CRC32 算法计算校验码
+        CRC32 crc32 = new CRC32();
+        String dataStr = invoiceData.getInvoiceNo() + 
+                        invoiceData.getInvoiceDate() + 
+                        formatDecimal(invoiceData.getTotalAmount().add(invoiceData.getTotalTax()));
+        crc32.update(dataStr.getBytes());
+        long crcValue = crc32.getValue();
+        
+        // 转换为 8 位十六进制字符串
+        return String.format("%08X", crcValue);
     }
     
     /**

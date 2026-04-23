@@ -1,0 +1,11 @@
+com/example/einvoice/service/InvoiceService.class
+com/example/einvoice/EInvoiceApplication.class
+com/example/einvoice/model/InvoiceItem.class
+com/example/einvoice/generator/InvoiceXMLGenerator.class
+com/example/einvoice/model/InvoiceGenerationResult.class
+com/example/einvoice/generator/InvoicePDFGenerator.class
+com/example/einvoice/model/PartyInfo.class
+com/example/einvoice/generator/InvoiceOFDGenerator.class
+com/example/einvoice/config/WebConfig.class
+com/example/einvoice/controller/InvoiceController.class
+com/example/einvoice/model/InvoiceData.class
