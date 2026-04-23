@@ -1,6 +1,26 @@
 ```
-# Generated invoices (assuming these are build artifacts/output files)
-invoices/*.ofd
-invoices/*.txt
-invoices/*.xml
+# Compiled and build artifacts
+*.class
+target/
+
+# Dependencies
+.m2/
+.gradle/
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
 ```
