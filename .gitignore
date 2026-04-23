@@ -1,26 +1,21 @@
 ```
 # Compiled and build artifacts
 *.class
+*.o
+*.obj
+*.out
 target/
-
 # Dependencies
 .m2/
 .gradle/
-
 # Logs and temp files
 *.log
 *.tmp
-
 # Environment
 .env
 .env.local
-*.env.*
-
+.env.*
 # Editors
 .vscode/
 .idea/
-
-# OS generated files
-.DS_Store
-Thumbs.db
 ```

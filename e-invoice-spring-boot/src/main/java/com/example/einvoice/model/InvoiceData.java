@@ -93,4 +93,9 @@ public class InvoiceData {
      * 复核人
      */
     private String reviewer;
+    
+    /**
+     * 发票类型 (NORMAL: 普通发票，SPECIAL: 专用发票)
+     */
+    private String invoiceType = "NORMAL";
 }

@@ -57,6 +57,18 @@
             <type>pom</type>
         </dependency>
 
+        <!-- ZXing for QR Code generation -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.5.2</version>
+        </dependency>
+
         <!-- Apache Commons IO -->
         <dependency>
             <groupId>commons-io</groupId>
