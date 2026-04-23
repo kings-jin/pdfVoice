@@ -1,0 +1,6 @@
+```
+# Generated invoices (assuming these are build artifacts/output files)
+invoices/*.ofd
+invoices/*.txt
+invoices/*.xml
+```
